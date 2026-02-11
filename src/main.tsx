@@ -4,7 +4,7 @@ import { Carousel } from "./Carousel/Carousel.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Carousel slidesPerView={1} gap={30} rows={3} navigation pagination>
+    <Carousel slidesPerView={1} gap={30} rows={3} rowGap={30} navigation pagination>
       <div style={{backgroundColor: 'red', height: 300}}></div>
       <div style={{backgroundColor: 'green', height: 300}}></div>
       <div style={{backgroundColor: 'blue', height: 300}}></div>

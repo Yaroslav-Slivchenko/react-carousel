@@ -6,4 +6,5 @@
  — slidesPerView (number), // Fractional value breaks pagination //     
  — rows (number), // Fractional not support // <br> 
  — gap (number), <br>
-  — and of course, children (ReactNode). <br>
+ — rowGap (number), <br>
+ — and of course, children (ReactNode). <br>

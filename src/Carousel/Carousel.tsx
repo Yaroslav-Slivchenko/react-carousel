@@ -10,12 +10,13 @@ interface CarouselProps {
   children: ReactNode,
   slidesPerView?: number,
   gap?: number,
+  rowGap?: number,
   rows?: number,
   navigation?: boolean,
   pagination?: boolean,
 }
 
-export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, rows = 1, gap = 0, navigation = false, pagination = false}) => {
+export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, rows = 1, gap = 0, rowGap = 0, navigation = false, pagination = false}) => {
 
   const [isDragging, setIsDragging] = useState(false)
   const [index, setIndex] = useState(0)
@@ -71,8 +72,6 @@ export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, rows =
     groupedChildren.push(children.slice(i, i + rows))
   }
 
-  console.log(index)
-
   return (
     <>
       <CarouselButtons prevSlide={prevSlide} nextSlide={nextSlide} />
@@ -102,7 +101,7 @@ export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, rows =
              }}
         >
           {groupedChildren.map((item, index) => (
-            <div key={`slide-${index}`} className={style.carousel__slide} style={{minWidth: `${widthSlides}%`}}>
+            <div key={`slide-${index}`} className={style.carousel__slide} style={{minWidth: `${widthSlides}%`, rowGap}}>
               {item}
             </div>
           ))}
