@@ -17,6 +17,7 @@ interface CarouselProps {
 }
 
 export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, rows = 1, gap = 0, rowGap = 0, navigation = false, pagination = false}) => {
+  children = Children.toArray(children)
 
   const [isDragging, setIsDragging] = useState(false)
   const [index, setIndex] = useState(0)
@@ -26,14 +27,13 @@ export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, rows =
   const currentX = useRef(0)
   const deltaX = useRef(0)
 
-  children = Children.toArray(children)
-
-  const amountSlides = Math.trunc((Children.count(children) - slidesPerView) / rows)
+  const slidesCount = Children.count(children)
+  const totalPerSlides = Math.ceil((slidesCount - (slidesPerView * rows)) / rows)
   const widthSlides = 100 / slidesPerView
 
   // BUTTON and NAVIGATION LOGIC //
   const correctIndex = (i: number) =>
-    Math.max(0, Math.min(amountSlides, i))
+    Math.max(0, Math.min(totalPerSlides, i))
   const nextSlide = () =>
     setIndex(i => correctIndex(i + 1))
   const prevSlide = () =>
@@ -85,7 +85,7 @@ export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, rows =
         />
 
         <CarouselPagination
-          amountSlides={amountSlides}
+          totalPerSlides={totalPerSlides}
           index={index}
           setIndex={setIndex}
           enable={pagination}
