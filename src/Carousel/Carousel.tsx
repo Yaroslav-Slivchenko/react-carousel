@@ -27,7 +27,7 @@ export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, rows =
 
   children = Children.toArray(children)
 
-  const amountSlides = (Children.count(children) - slidesPerView) / rows
+  const amountSlides = Math.trunc((Children.count(children) - slidesPerView) / rows)
   const widthSlides = 100 / slidesPerView
 
   // BUTTON and NAVIGATION LOGIC //
@@ -71,8 +71,7 @@ export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, rows =
     groupedChildren.push(children.slice(i, i + rows))
   }
 
-  console.log(children)
-  console.log(groupedChildren)
+  console.log(index)
 
   return (
     <>
