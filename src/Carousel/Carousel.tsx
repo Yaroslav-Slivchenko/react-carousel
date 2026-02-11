@@ -1,6 +1,7 @@
 import style from './Carousel.module.scss'
 
 import {Children, type FC, type ReactNode, useRef, useState} from "react";
+
 import {CarouselPagination} from "./CarouselPagination.tsx";
 import {CarouselNavigation} from "./CarouselNavigation.tsx";
 import {CarouselButtons} from "./CarouselButtons.tsx";
@@ -9,11 +10,12 @@ interface CarouselProps {
   children: ReactNode,
   slidesPerView?: number,
   gap?: number,
+  rows?: number,
   navigation?: boolean,
   pagination?: boolean,
 }
 
-export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, gap = 0, navigation = false, pagination = false}) => {
+export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, rows = 1, gap = 0, navigation = false, pagination = false}) => {
 
   const [isDragging, setIsDragging] = useState(false)
   const [index, setIndex] = useState(0)
@@ -23,13 +25,20 @@ export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, gap = 
   const currentX = useRef(0)
   const deltaX = useRef(0)
 
+  children = Children.toArray(children)
+
+  const amountSlides = (Children.count(children) - slidesPerView) / rows
   const widthSlides = 100 / slidesPerView
-  const amountSlides = Children.count(children) - slidesPerView
 
-  const correctIndex = (i: number) => Math.max(0, Math.min(amountSlides, i))
-  const nextSlide = () => setIndex(i => correctIndex(i + 1))
-  const prevSlide = () => setIndex(i => correctIndex(i - 1))
+  // BUTTON and NAVIGATION LOGIC //
+  const correctIndex = (i: number) =>
+    Math.max(0, Math.min(amountSlides, i))
+  const nextSlide = () =>
+    setIndex(i => correctIndex(i + 1))
+  const prevSlide = () =>
+    setIndex(i => correctIndex(i - 1))
 
+  // TOUCH LOGIC //
   function onTouchStart(event: React.TouchEvent<HTMLDivElement>) {
     setIsDragging(true)
 
@@ -56,7 +65,14 @@ export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, gap = 
     setOffset(0)
   }
 
-  console.log(index)
+  // ROWS SUPPORT //
+  const groupedChildren = []
+  for (let i = 0; i < children.length; i += rows) {
+    groupedChildren.push(children.slice(i, i + rows))
+  }
+
+  console.log(children)
+  console.log(groupedChildren)
 
   return (
     <>
@@ -86,7 +102,7 @@ export const Carousel: FC<CarouselProps> = ({children, slidesPerView = 1, gap = 
                gap
              }}
         >
-          {Children.map(children, (item, index) => (
+          {groupedChildren.map((item, index) => (
             <div key={`slide-${index}`} className={style.carousel__slide} style={{minWidth: `${widthSlides}%`}}>
               {item}
             </div>

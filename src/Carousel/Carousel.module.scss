@@ -2,6 +2,12 @@
   overflow-x: hidden;
   position: relative;
 
+  &__slide {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
   &__track {
     display: flex;
     width: 100%;
@@ -72,7 +78,7 @@
       pointer-events: auto;
 
       &Current {
-        background-color: yellow;
+        background-color: black;
       }
     }
   }
